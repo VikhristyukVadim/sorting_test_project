@@ -34,26 +34,26 @@ def heapify(nums, heap_size, root_index, lambda_function):
         heapify(nums, heap_size, largest, lambda_function)
 
 
-def heap_sort(nums, lambda_function=None):
+def heap_sort(lst, lambda_function=None):
     """
     variant heapsort function
-    :param nums: list
+    :param lst: list
     :param lambda_function: optional user function
     :return: sorted list
     """
-    n = len(nums)
+    n = len(lst)
 
     """ Create Max Heap from the list """
     """ The second argument means to stop the algorithm before element -1, i.e. before the first element of the list """
     """ 3rd argument means to iterate through the list in the opposite direction decreasing the counter i by 1 """
     for i in range(n, -1, -1):
-        heapify(nums, n, i, lambda_function)
+        heapify(lst, n, i, lambda_function)
 
     """ Move the root Max Heap to the end of the list """
     for i in range(n - 1, 0, -1):
-        nums[i], nums[0] = nums[0], nums[i]
-        heapify(nums, i, 0, lambda_function)
-    return nums
+        lst[i], lst[0] = lst[0], lst[i]
+        heapify(lst, i, 0, lambda_function)
+    return lst
 
 
 def default_sorting(lst, lambda_function):

@@ -17,7 +17,9 @@ def time_measure(fn, lst, lambda_function):
     return stop - start
 
 
-def result_visualiser(variant_of_sorting, generated_list, lambda_function):
-    spent_time = time_measure(variant_of_sorting, generated_list, lambda_function)
-    print(variant_of_sorting.__name__, "<--- function wasted time : ", spent_time)
-    print("-" * 100)
+def result_visualiser(variant_of_sorting, data, lambda_function):
+    for (dat, fnc) in list(zip(data, lambda_function)):
+        spent_time = time_measure(variant_of_sorting, dat, fnc)
+        print(variant_of_sorting.__name__, "<--- function wasted time : ", spent_time)
+        print("-" * 100)
+    print("." * 100)
