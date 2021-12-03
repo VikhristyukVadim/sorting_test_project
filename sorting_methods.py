@@ -1,7 +1,7 @@
 from random import choice
 
 
-def heapify(nums, heap_size, root_index, lambda_function):
+def heapify(lst, heap_size, root_index, lambda_function):
     """ The index of the largest element is considered the root index """
     largest = root_index
     left_child = (2 * root_index) + 1
@@ -12,26 +12,27 @@ def heapify(nums, heap_size, root_index, lambda_function):
 
     if lambda_function is not None:
         """ Checking if the left child exists greater than the root """
-        if lambda_function(left_child, heap_size) < 0 < lambda_function(nums[left_child], nums[largest]):
+        # if left_child < heap_size : print(">>>>>>>>>>>>>>>>",lambda_function(lst[left_child], lst[largest]))
+        if left_child < heap_size and lambda_function(lst[left_child], lst[largest]) > 0:
             largest = left_child
 
         """ Ditto for the right child of the root """
-        if lambda_function(right_child, heap_size) < 0 < lambda_function(nums[right_child], nums[largest]):
+        if right_child < heap_size and lambda_function(lst[right_child], lst[largest]) > 0:
             largest = right_child
     else:
         """ Checking if the left child exists greater than the root """
-        if left_child < heap_size and nums[left_child] > nums[largest]:
+        if left_child < heap_size and lst[left_child] > lst[largest]:
             largest = left_child
 
         """ Ditto for the right child of the root """
-        if right_child < heap_size and nums[right_child] > nums[largest]:
+        if right_child < heap_size and lst[right_child] > lst[largest]:
             largest = right_child
 
     """ If the largest element is no longer the root, they are swapped """
     if largest != root_index:
-        nums[root_index], nums[largest] = nums[largest], nums[root_index]
+        lst[root_index], lst[largest] = lst[largest], lst[root_index]
         """ Heapify the new root element to ensure it's the largest """
-        heapify(nums, heap_size, largest, lambda_function)
+        heapify(lst, heap_size, largest, lambda_function)
 
 
 def heap_sort(lst, lambda_function=None):
@@ -81,7 +82,6 @@ def quick_sorting(lst, lambda_function=None):
         q = choice(lst)
 
     e_lst = [q] * lst.count(q)
-
     if lambda_function is not None:
         l_lst = [n for n in lst if lambda_function(n, q) < 0]
         b_lst = [n for n in lst if lambda_function(n, q) > 0]

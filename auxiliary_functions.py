@@ -1,4 +1,5 @@
 import timeit
+import time
 from random import randint
 
 
@@ -8,18 +9,59 @@ def list_generator(a, b):
     return [*lst]
 
 
-def time_measure(fn, lst, lambda_function):
-    start = timeit.default_timer()
-    result_of_sorting = fn(lst, lambda_function)
-    stop = timeit.default_timer()
-    print(" " * 100)
-    print("result_of_sorting", result_of_sorting)
-    return stop - start
-
-
 def result_visualiser(variant_of_sorting, data, lambda_function):
-    for (dat, fnc) in list(zip(data, lambda_function)):
-        spent_time = time_measure(variant_of_sorting, dat, fnc)
-        print(variant_of_sorting.__name__, "<--- function wasted time : ", spent_time)
-        print("-" * 100)
-    print("." * 100)
+    timer = Timer()
+    if len(lambda_function) > 0:
+        for (dat, fnc) in list(zip(data, lambda_function)):
+            # spent_time = time_measure(variant_of_sorting, dat, fnc)
+            print("function: " + variant_of_sorting.__name__.upper())
+            spent_time = timer.measuring(variant_of_sorting, dat, fnc)
+            print("function result : ", spent_time)
+            print("-" * 100)
+    else:
+        for dat in data:
+            print("function: " + variant_of_sorting.__name__.upper())
+            spent_time = timer.measuring(variant_of_sorting, dat, None)
+            print("function result : ", spent_time)
+            print("-" * 100)
+    print("_" * 100)
+
+
+class TimerError(Exception):
+    """A custom exception used to report errors in use of Timer class"""
+
+
+class Timer:
+    def __init__(self):
+        self._start_time = None
+
+    def start(self):
+        """Start a new timer"""
+        if self._start_time is not None:
+            raise TimerError(f"Timer is running. Use .stop() to stop it")
+        self._start_time = time.perf_counter()
+
+    def stop(self):
+
+        """Stop the timer, and report the elapsed time"""
+
+        if self._start_time is None:
+            raise TimerError(f"Timer is not running. Use .start() to start it")
+
+        elapsed_time = time.perf_counter() - self._start_time
+        self._start_time = None
+        print(f"Elapsed time: {elapsed_time} seconds")
+
+    def measuring(self, testing_object, dat, fnc):
+        self.start()
+        res = testing_object(dat, fnc)
+        self.stop()
+        return res
+
+# def time_measure(fn, lst, lambda_function):
+#     # start = timeit.default_timer()
+#     # result_of_sorting = fn(lst, lambda_function)
+#     # stop = timeit.default_timer()
+#     # print(" " * 100)
+#     # print("result_of_sorting", result_of_sorting)
+#     return stop - start
