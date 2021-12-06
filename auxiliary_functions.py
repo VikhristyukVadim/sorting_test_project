@@ -1,4 +1,3 @@
-import timeit
 import time
 from random import randint
 
@@ -58,10 +57,3 @@ class Timer:
         self.stop()
         return res
 
-# def time_measure(fn, lst, lambda_function):
-#     # start = timeit.default_timer()
-#     # result_of_sorting = fn(lst, lambda_function)
-#     # stop = timeit.default_timer()
-#     # print(" " * 100)
-#     # print("result_of_sorting", result_of_sorting)
-#     return stop - start

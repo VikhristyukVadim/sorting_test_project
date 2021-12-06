@@ -10,23 +10,14 @@ def heapify(lst, heap_size, root_index, lambda_function):
     """ If the left child of the root is a valid index and the element is greater than the current largest,
         update the largest element """
 
-    if lambda_function is not None:
-        """ Checking if the left child exists greater than the root """
-        # if left_child < heap_size : print(">>>>>>>>>>>>>>>>",lambda_function(lst[left_child], lst[largest]))
-        if left_child < heap_size and lambda_function(lst[left_child], lst[largest]) > 0:
-            largest = left_child
+    """ Checking if the left child exists greater than the root """
+    # if left_child < heap_size : print(">>>>>>>>>>>>>>>>",lambda_function(lst[left_child], lst[largest]))
+    if left_child < heap_size and lambda_function(lst[left_child], lst[largest]) > 0:
+        largest = left_child
 
-        """ Ditto for the right child of the root """
-        if right_child < heap_size and lambda_function(lst[right_child], lst[largest]) > 0:
-            largest = right_child
-    else:
-        """ Checking if the left child exists greater than the root """
-        if left_child < heap_size and lst[left_child] > lst[largest]:
-            largest = left_child
-
-        """ Ditto for the right child of the root """
-        if right_child < heap_size and lst[right_child] > lst[largest]:
-            largest = right_child
+    """ Ditto for the right child of the root """
+    if right_child < heap_size and lambda_function(lst[right_child], lst[largest]) > 0:
+        largest = right_child
 
     """ If the largest element is no longer the root, they are swapped """
     if largest != root_index:
@@ -35,7 +26,7 @@ def heapify(lst, heap_size, root_index, lambda_function):
         heapify(lst, heap_size, largest, lambda_function)
 
 
-def heap_sort(lst, lambda_function=None):
+def heap_sort(lst, lambda_function=lambda a, b: 1 if a[0] < b[0] else -1 if a[0] > b[0] else 0):
     """
     variant heapsort function
     :param lst: list
@@ -68,7 +59,7 @@ def default_sorting(lst, lambda_function):
     return res
 
 
-def quick_sorting(lst, lambda_function=None):
+def quick_sorting(lst, lambda_function=lambda a, b: 1 if a[0] < b[0] else -1 if a[0] > b[0] else 0):
     """
     variant quick sorting function
     :param lambda_function: optional user function
@@ -82,13 +73,7 @@ def quick_sorting(lst, lambda_function=None):
         q = choice(lst)
 
     e_lst = [q] * lst.count(q)
-    if lambda_function is not None:
-        l_lst = [n for n in lst if lambda_function(n, q) < 0]
-        b_lst = [n for n in lst if lambda_function(n, q) > 0]
-        res = quick_sorting(l_lst, lambda_function) + e_lst + quick_sorting(b_lst, lambda_function)
-        return res
-    else:
-        l_lst = [n for n in lst if n < q]
-        b_lst = [n for n in lst if n > q]
-        res = quick_sorting(l_lst) + e_lst + quick_sorting(b_lst)
-        return res
+    l_lst = [n for n in lst if lambda_function(n, q) < 0]
+    b_lst = [n for n in lst if lambda_function(n, q) > 0]
+    res = quick_sorting(l_lst, lambda_function) + e_lst + quick_sorting(b_lst, lambda_function)
+    return res
